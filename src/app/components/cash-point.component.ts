@@ -57,7 +57,7 @@ export class CashPointComponent extends GlobalInput implements OnInit, OnDestroy
                 },
                 error => {
                     this.wait_identifier = false;
-                    this.flash_message_service.flash('Unkown barcode.', 'alert-danger');
+                    this.flash_message_service.flash('Unbekannter Barcode.', 'alert-danger');
                 }
             );
         this.identifier_input = '';
@@ -65,7 +65,7 @@ export class CashPointComponent extends GlobalInput implements OnInit, OnDestroy
 
     processItem(item: Identifiable): void {
         if(item instanceof Product){
-            this.flash_message_service.flash('This is not a user barcode.', 'alert-danger');
+            this.flash_message_service.flash('Das ist keine KundenID.', 'alert-danger');
         }
         else if(item instanceof User){
             this.user = item;
@@ -93,7 +93,7 @@ export class CashPointComponent extends GlobalInput implements OnInit, OnDestroy
     }
 
     abort(): void {
-        this.flash_message_service.flash('Transaction aborted.', 'alert-warning');
+        this.flash_message_service.flash('Transaktion abgebrochen.', 'alert-warning');
         this.reset();
     }
 

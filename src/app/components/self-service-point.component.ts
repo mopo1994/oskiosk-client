@@ -50,7 +50,7 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
     getRandomInt(min: number, max: number): number {
         min = Math.ceil(min);
         max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min +1)) + min; 
+        return Math.floor(Math.random() * (max - min +1)) + min;
     }
 
     onSpecialKeyInput(keyCode: number): void {
@@ -78,7 +78,7 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
                 error => {
                     this.wait_identifier = false;
                     console.error(error);
-                    this.flash_message_service.flash('Not found! No product or user with this barcode exists.', 'flash-huge alert-danger');
+                    this.flash_message_service.flash('Nicht gefunden! Es existiert kein Produkt oder Kunde mit diesem Barcode.', 'flash-huge alert-danger');
                 }
             );
         this.identifier_input = '';
@@ -87,7 +87,7 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
     processItem(item: Identifiable): void {
         if(item instanceof Product){
             if(!this.user){
-                this.flash_message_service.flash('Please scan your ID card first! You have scanned a product, but you need to scan your ID card.', 'flash-huge alert-danger');
+                this.flash_message_service.flash('Bitte scanne zuerst deine ID Karte! Du hast ein Produkt gescannt, musst aber zuerst eine ID Karte scannen.', 'flash-huge alert-danger');
                 return;
             }
             this.cart.addToCart(item.name, item.pricings[0]); // hackedyhack ... select proper pricing instead
@@ -95,7 +95,7 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
         }
         else if(item instanceof User){
             if(this.user){
-                this.flash_message_service.flash('Already logged in! You have already scanned an ID card. If you want to change the user, please abort this transaction.', 'flash-huge alert-danger');
+                this.flash_message_service.flash('Bereits eingeloggt! Du hast bereits eine ID Karte gescannt. Wenn du den Kunden ändern möchtest brich bitte die Transaktion ab.', 'flash-huge alert-danger');
                 return;
             }
             this.user = item;
@@ -110,7 +110,7 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
             cart => this.cart = cart,
             error => {
                 console.error(error);
-                this.flash_message_service.flash('Cart update failed! The cart could not be updated, probably because the product is no longer available.', 'flash-huge alert-danger');
+                this.flash_message_service.flash('Warenkorb Update fehlgeschlagen! Der Warenkorb konnte nicht geupdated werden, möglicherweise ist das Produkt nicht länger verfügbar.', 'flash-huge alert-danger');
             }
         );
     }
@@ -124,7 +124,7 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
             },
             error => {
                 console.error(error);
-                this.flash_message_service.flash('Cart payment failed! The server did not accept the transaction, probably because your account balance is insufficient.', 'flash-huge alert-danger');
+                this.flash_message_service.flash('Warenkorb bezahlen fehlgeschlagen! Der Server hat die Transaktion nicht akzeptiert; möglicherweise hast du nicht ausreichend Guthaben.', 'flash-huge alert-danger');
             }
         );
     }

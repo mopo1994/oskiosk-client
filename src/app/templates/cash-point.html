@@ -1,7 +1,7 @@
 <navbar></navbar>
 
 <div class="container-fluid">
-    <h1 class="mt-2">Cash Point</h1>
+    <h1 class="mt-2">Einzahlungsstation</h1>
 
     <div class="row">
         <div class="col-lg-4">
@@ -16,14 +16,14 @@
                         <input type="text" class="form-control form-control-lg" [value]="identifier_input" placeholder="Type identifier or use barcode scanner ..." readonly>
                     </div>
                     <button class="btn btn-secondary btn-lg btn-block mt-2" (click)="confirmInput()" [disabled]="identifier_input.length == 0">
-                        <i *ngIf="wait_identifier" class="fa fa-spinner fa-spin fa-fw"></i> Enter barcode
+                        <i *ngIf="wait_identifier" class="fa fa-spinner fa-spin fa-fw"></i> Barcode eingeben
                     </button>
                 </div>
             </div>
 
             <div class="card mt-2" *ngIf="user">
                 <div class="card-header">
-                    Customer
+                    Kunde
                 </div>
                 <div class="card-body">
                     <h2 class="card-title"><i *ngIf="wait_checkout" class="fa fa-spinner fa-spin fa-fw"></i> {{ user.balance / 100 | currency:'EUR':true:'1.2-2' }}</h2>
@@ -40,7 +40,7 @@
                     Choose amount to deposit or withdraw
                 </div>
                 <div class="card-body text-center text-muted" *ngIf="!user">
-                    Please scan a customer code first.
+                  Bitte scanne zuerst einen Kundenbarcode.
                 </div>
                 <div class="card-body" *ngIf="user">
                     <h4 class="card-subtitle">Deposit/Withdraw to set user balance to 0 €</h4>

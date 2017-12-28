@@ -58,7 +58,7 @@ export class SalesPointComponent extends GlobalInput implements OnInit, OnDestro
                 },
                 error => {
                     this.wait_identifier = false;
-                    this.flash_message_service.flash('Unkown barcode.', 'alert-danger');
+                    this.flash_message_service.flash('Unbekannter barcode.', 'alert-danger');
                 }
             );
         this.identifier_input = '';
@@ -91,7 +91,7 @@ export class SalesPointComponent extends GlobalInput implements OnInit, OnDestro
             cart => this.cart = cart,
             error => {
                 console.log(error);
-                this.flash_message_service.flash('Cart update failed.', 'alert-danger');
+                this.flash_message_service.flash('Warenkorb Update fehlgeschlagen!.', 'alert-danger');
             }
         );
     }
@@ -101,12 +101,12 @@ export class SalesPointComponent extends GlobalInput implements OnInit, OnDestro
         this.backend_service.payCart(this.cart).subscribe(
             transaction => {
                 this.wait_checkout = false;
-                this.flash_message_service.flash('Transaction created!', 'alert-success');
+                this.flash_message_service.flash('Transaktion erstellt.', 'alert-success');
                 this.reset();
             },
             error => {
                 console.log(error);
-                this.flash_message_service.flash('Cart payment failed.', 'alert-danger');
+                this.flash_message_service.flash('Warenkorb bezahlen fehlgeschlagen.', 'alert-danger');
             }
         );
     }

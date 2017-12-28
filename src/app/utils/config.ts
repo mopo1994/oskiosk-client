@@ -6,7 +6,7 @@ export const ConfigLoader = new Promise((resolve, reject) => {
             resolve(JSON.parse(xhr.responseText));
         }
         else {
-            reject("Cannot load configuration...");
+            reject("Konfiguartion kann nicht geladen werden...");
         }
     };
     xhr.send();

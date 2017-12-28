@@ -46,7 +46,7 @@ export class UserEditComponent implements OnInit {
                 this.backend_service.getUser(+user_id)
                 .subscribe(
                     user => this.user = user,
-                    error => this.flashMessageService.flash('Failed to load user!', 'alert-danger')
+                    error => this.flashMessageService.flash('Kunden laden fehlgeschlagen!', 'alert-danger')
                 );
             }
         });
@@ -56,11 +56,11 @@ export class UserEditComponent implements OnInit {
         this.backend_service.saveUser(this.user)
         .subscribe(
             user => {
-                this.flashMessageService.flash('User saved!', 'alert-success');
+                this.flashMessageService.flash('Kunde gespeichert!', 'alert-success');
                 this.router.navigate(['/users']);
             },
             error => {
-                this.flashMessageService.flash('Failed to save user!', 'alert-danger');
+                this.flashMessageService.flash('Kunde speichern fehlgeschlagen!', 'alert-danger');
             }
         );
     }
