@@ -1,34 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+//@import "../node_modules/materialize-css/dist/css/materialize.min.css";
+//@import "~@angular/material/prebuilt-themes/purple-green.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 .flash-messages {
-    position: fixed;
-    z-index: 1030;
-    top: 10px;
-    right: 25px;
+  position: fixed;
+  z-index: 1030;
+  top: 10px;
+  right: 25px;
 }
 
 .flash-message {
-    min-width: 400px;
-    min-height: 100px;
-    box-shadow: 5px 5px 15px gray;
+  min-width: 400px;
+  min-height: 100px;
+  box-shadow: 5px 5px 15px gray;
 }
 
 .flash-huge {
-    font-size: 300%;
-    position: fixed;
-    top: 30vh;
-    width: 95vw;
-    height: 40vh;
-    text-align: center;
+  font-size: 300%;
+  position: fixed;
+  top: 30vh;
+  width: 95vw;
+  height: 40vh;
+  text-align: center;
 }
 
 .wait-indicator-container {
-    position: fixed;
-    z-index: 1030;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 100px;
-    margin-left: -100px;
-    margin-top: -50px;
-  }
+  position: fixed;
+  z-index: 1030;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 100px;
+  margin-left: -100px;
+  margin-top: -50px;
+}

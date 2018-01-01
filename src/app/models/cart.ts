@@ -10,25 +10,25 @@ export class Cart{
     @Expose() user_id: number;
     @Expose() lock_version: number;
 
-    constructor(){
+    constructor() {
         this.cart_items = [];
     }
 
     isEmpty(): boolean {
-        return this.cart_items.length == 0;
+        return this.cart_items.length === 0;
     }
 
     totalSum(): number {
         let sum = 0;
-        for(let item of this.cart_items){
+        for (const item of this.cart_items){
             sum += item.totalPrice();
         }
         return sum;
     }
 
     addToCart(product_name: string, pricing: Pricing, quantity: number = 1): void {
-        for(let item of this.cart_items){
-            if(item.pricing_id == pricing.id){
+        for (const item of this.cart_items) {
+            if(item.pricing_id === pricing.id) {
                 item.quantity += quantity;
                 return;
             }
@@ -37,10 +37,10 @@ export class Cart{
     }
 
      private modifyQuantity(pricing_id: number, quantity: number): void {
-        for(let item of this.cart_items){
-            if(item.pricing_id == pricing_id){
+        for (const item of this.cart_items) {
+            if (item.pricing_id === pricing_id) {
                 item.quantity += quantity;
-                if(item.quantity <= 0){
+                if (item.quantity <= 0){
                     this.cart_items.splice(this.cart_items.indexOf(item),1);
                 }
                 return;

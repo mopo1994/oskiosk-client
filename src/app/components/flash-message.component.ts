@@ -1,17 +1,19 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FlashMessage, FlashMessageService } from "app/services"
+import {Component, OnInit} from '@angular/core';
+import {FlashMessage, FlashMessageService} from 'app/services'
 
 @Component({
-    selector: 'flash-messages',
-    templateUrl: '../templates/flash-messages.html',
-    providers: []
+  selector: 'flash-messages',
+  templateUrl: '../templates/flash-messages.html',
+  providers: []
 })
-export class FlashMessageComponent implements OnInit{
-    flashMessages: FlashMessage[];
+export class FlashMessageComponent implements OnInit {
+  flashMessages: FlashMessage[];
 
-    constructor(private flashMessageService: FlashMessageService) {}
+  constructor(
+    private flashMessageService: FlashMessageService) {
+  }
 
-    ngOnInit() {
-        this.flashMessages = this.flashMessageService.getFlashMessages();
-    }
+  ngOnInit() {
+    this.flashMessages = this.flashMessageService.getFlashMessages();
+  }
 }
