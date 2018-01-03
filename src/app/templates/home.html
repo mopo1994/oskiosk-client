@@ -1,40 +1,50 @@
-<navbar></navbar>
-
-<!--<div class="container-fluid">-->
 <div>
-    <h1 class="mt-2">Home</h1>
+  <h1 class="headline">Home</h1>
 
-    <div class="card mt-2">
-        <div class="card-body lead">
-          Hallo und willkommen zum DukeKiosk webinterface!
-          In der Zukunft sind hier Informationen über bisherige Kundenaktivitäten angedacht.
-          Aktuell gibt es eine kurze Einführung darüber, was auf welcher Seite zu finden ist.
-        </div>
-    </div>
+  <div class="body-1">
+    Hallo und willkommen zum DukeKiosk webinterface!
+    In der Zukunft sind hier Informationen über bisherige Kundenaktivitäten angedacht.
+    Aktuell gibt es eine kurze Einführung darüber, was auf welcher Seite zu finden ist.
+  </div>
 
-    <h3 class="mt-4">Administratoransichten</h3>
+  <mat-list>
+    <h3 matSubheader>Administrator-Ansichten</h3>
+    <mat-list-item routerLink="/products" matTooltip="Erstellen / Verwalten von Produkten">
+      <mat-icon matListIcon svgIcon="coffee"></mat-icon>
+      <h4 matLine>Produkte</h4>
+      <p matLine class="demo-2"> Erstelle oder bearbeite Produkte. Verwalte Preise, Barcodes, usw. </p>
+    </mat-list-item>
+    <mat-list-item routerLink="/users" matTooltip="Erstellen / Verwalten von Benutzern">
+      <mat-icon matListIcon svgIcon="account"></mat-icon>
+      <h4 matLine>Kunden</h4>
+      <p matLine class="demo-2"> Erstelle oder bearbeite Benutzer, Verawalte Namen, ID barcodes, usw. </p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <h3 matSubheader>Mitarbeiter-Ansichten</h3>
+    <mat-list-item routerLink="/sales-point" matTooltip="Verwalten von KundenCheckouts (Barcodescanner empfohlen)">
+      <mat-icon matListIcon svgIcon="cart"></mat-icon>
+      <h4 matLine>Verkaufsstation</h4>
+      <p matLine class="demo-2">Diese Ansicht kann von einem Mitarbeiter genutzt werden, um Kunden-Checkouts zu
+        verwalten.<br>
+        Sollte mit einem barcode scanner verwendet werden. </p>
+    </mat-list-item>
+    <mat-list-item routerLink="/cash-point" matTooltip="Verwalten von KundenEinzahlungen (Barcodescanner empfohlen)">
+      <mat-icon matListIcon svgIcon="cash"></mat-icon>
+      <h4 matLine>Kassenstation</h4>
+      <p matLine class="demo-2">Diese Ansicht kann von einem Mitarbeiter genutzt werden, um Kunden-Einzahlungen zu
+        verwalten. <br>
+        Sollte mit einem barcode scanner verwendet werden. </p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <h3 matSubheader>Kunden-Ansichten</h3>
+    <mat-list-item routerLink="/self-service-point"
+                   matTooltip="Ansicht für einen Selbstbedienungsstation (Barcodescanner empfohlen)">
+      <mat-icon matListIcon svgIcon="barcode"></mat-icon>
+      <h4 matLine>Selbstbedienungsstation</h4>
+      <p matLine class="demo-2">
+        Kunden können hier ihre Produkte selbstständig eingeben.<br>
+        (Begrenzte Funktionalität, anderes Nutzerinterface; BarcodeScanner empfohlen)</p>
+    </mat-list-item>
+  </mat-list>
 
-    <h4 class="mt-2"><a routerLink="/products">Produkte</a></h4>
-    Erstelle oder bearbeite Produkte. Verwalte Preise, Barcodes, usw.
-
-    <h4 class="mt-2"><a routerLink="/users">Kunden</a></h4>
-    Erstell oder bearbeite Benutzer, Verawalte Namen, ID barcodes, usw.
-
-    <h3 class="mt-4">Mitarbeiteransichten</h3>
-
-    <h4 class="mt-2"><a routerLink="/sales-point">Verkaufsstation</a></h4>
-    Diese Ansicht kann von einem Mitarbeiter genutzt werden, um Kunden-checkouts zu verwalten.
-    Sollte mit einem barcode scanner verwendet werden.
-
-    <h4 class="mt-2"><a routerLink="/cash-point">Kassenstation</a></h4>
-    This view can be used by a kiosk employee to handle customer payments.
-    Sollte mit einem barcode scanner verwendet werden.
-
-    <h3 class="mt-4">Kundenansichten</h3>
-
-    <h4 class="mt-2"><a routerLink="/self-service-point">Selbstbedienungsstation</a></h4>
-    Diese Ansicht kann auf einem kiosk terminal angezeigt werden.
-    Kunden können hier ihre Produkte selbstständig eingeben.
-    Diese Ansicht hat eine begrenzte Funktionalität und ein anderes Nutzerinterface.
-    Sollte mit einem barcode scanner verwendet werden.
 </div>

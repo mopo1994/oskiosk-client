@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Cart, User, Identifiable, Product} from 'app/models';
+import {Cart, Identifiable, Product, User} from 'app/models';
 import {GlobalInput, KeyCode} from 'app/utils';
 import {BackendService, FlashMessageService} from 'app/services';
 
@@ -11,11 +11,11 @@ import {BackendService, FlashMessageService} from 'app/services';
   providers: []
 })
 export class SalesPointComponent extends GlobalInput implements OnInit, OnDestroy {
-  identifier_input: string = '';
+  identifier_input = '';
   cart: Cart;
   user: User;
-  wait_identifier: boolean = false;
-  wait_checkout: boolean = false;
+  wait_identifier = false;
+  wait_checkout = false;
 
   constructor(private backend_service: BackendService,
               private flash_message_service: FlashMessageService) {

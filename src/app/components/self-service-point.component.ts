@@ -60,9 +60,9 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
   }
 
   startSessionTimeout() {
-    setTimeout(() => {
+    this.sessionTimeout = setTimeout(() => {
       this.abort();
-    }, 15000);
+    }, 5000);
     return;
   }
 
@@ -118,7 +118,8 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
 
   confirmInput(): void {
 //    this.wait_identifier = true;
-    this.openSnackBar(this.identifier_input);
+//    this.openSnackBar(this.identifier_input);
+    this.clearTimeout();
     this.backend_service.getItemByIdentifier(this.identifier_input)
       .subscribe(
         item => {
@@ -138,6 +139,7 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
   }
 
   processItem(item: Identifiable): void {
+    this.startSessionTimeout();
     if (item instanceof Product) {
       if (!this.user) {
         this.openSnackBar('Bitte scanne zuerst deine ID Karte! Du hast ein Produkt gescannt, musst aber zuerst '
@@ -173,7 +175,6 @@ export class SelfServicePointComponent extends GlobalInput implements OnInit, On
       this.mode = 1;
       this.goToStepper(1);
 //      this.isLinear = true;
-      this.startSessionTimeout();
     }
   }
 

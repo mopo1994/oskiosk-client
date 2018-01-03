@@ -1,90 +1,108 @@
-<navbar></navbar>
-
 <div class="container-fluid">
-    <h1 *ngIf="user.id" class="mt-2">Kunden bearbeiten</h1>
-    <h1 *ngIf="!user.id" class="mt-2">Kunde erstellen</h1>
+  <h1 *ngIf="user.id" class="headline">Kunde bearbeiten</h1>
+  <h1 *ngIf="!user.id" class="headline">Kunde erstellen</h1>
 
-    <div class="card mt-2">
-        <div class="card-body">
-
-            <h4>Kundenname</h4>
-            <div class="form-group row">
-                <div class="col-12">
-                    <input class="form-control" type="text" [(ngModel)]="user.name">
-                </div>
-            </div>
-            <h4>Saldo</h4>
-            <div class="form-group row">
-                <div class="col-12">
-                    <input class="form-control" type="text" [value]="user.balance / 100 | currency:'EUR':true:'1.2-2'" readonly>
-                </div>
-            </div>
-            <div class="row"><div class="col-12 text-muted">If you want to deposit or withdraw funds from this account, please use the cash point view.</div></div>
-            <h4 class="mt-2">Prepaid/Postpaid</h4>
-            <div class="form-group row">
-                <div class="col-12">
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" [(ngModel)]="user.allow_negative_balance">
-                            Dem Kunden einen negativen Kontostand erlauben (postpaid account)
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row" *ngIf="user">
-                <div class="col-lg-4 mt-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>Tags</h4>
-                            <div *ngFor="let tag of user.tags" class="form-group row">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i></span>
-                                        <input class="form-control" type="text" [(ngModel)]="tag.name">
-                                        <span class="input-group-btn">
-                                            <button (click)="deleteTag(tag)" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button (click)="addTag()" class="btn btn-secondary"><i class="fa fa-plus" aria-hidden="true"></i> Add tag</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 mt-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>Barcodes</h4>
-                            <div *ngFor="let identifier of user.identifiers" class="form-group row">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-barcode" aria-hidden="true"></i></span>
-                                        <input class="form-control" type="text" [(ngModel)]="identifier.code">
-                                        <span class="input-group-btn">
-                                            <button (click)="deleteIdentifier(identifier)" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button (click)="addIdentifier()" class="btn btn-secondary"><i class="fa fa-plus" aria-hidden="true"></i> Add barcode</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 mt-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>Transactions</h4>
-                            <div class="text-center text-muted">Aktuell nicht unterstützt.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-success" (click)="save()"><i class="fa fa-check"></i> Änderungen speichern</button>
-            <a routerLink="/users" class="btn btn-warning"><i class="fa fa-undo"></i> Änderungen verwerfen</a>
-        </div>
+  <mat-card>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Name" type="text" [(ngModel)]="user.name">
+    </mat-form-field>
+    <div class="form-group row">
+      <div class="col-12">
+        <!--<input class="form-control" type="text" [value]="user.balance / 100 | currency:'EUR':true:'1.2-2'" readonly>-->
+        <mat-form-field class="demo-chip-list">
+          <mat-placeholder>
+            <mat-icon>cash</mat-icon>
+            Saldo
+          </mat-placeholder>
+          <input readonly
+                 matInput name="tag hinzufügen"
+                 [value]="user.balance / 100 | currency:'EUR':true:'1.2-2'">
+        </mat-form-field>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-12 text-muted">If you want to deposit or withdraw funds from this account, please use the cash
+        point view.
+      </div>
+    </div>
+    <h4 class="mt-2">Prepaid/Postpaid</h4>
+    <div class="form-group row">
+      <div class="col-12">
+        <div class="form-check">
+          <label class="form-check-label">
+            <mat-slide-toggle [(ngModel)]="user.allow_negative_balance" color="primary">Dem Kunden einen negativen Kontostand erlauben (postpaid account)</mat-slide-toggle>
+            <!--<input class="form-check-input" type="checkbox" [(ngModel)]="user.allow_negative_balance">
+            Dem Kunden einen negativen Kontostand erlauben (postpaid account)-->
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="user">
+      <div class="col-lg-4 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <!--<h4>Tags</h4>-->
+            <mat-form-field class="demo-chip-list">
+              <mat-chip-list #tagList>
+                <mat-chip *ngFor="let tag of user.tags" [selectable]="selectable"
+                          [removable]="true" (remove)="removeTagNew(tag)">
+                  {{tag.name}}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+
+              <mat-placeholder>
+                <i class="fa fa-tag" aria-hidden="true"></i>
+                TAG
+              </mat-placeholder>
+              <input matInput name="tag hinzufügen"
+                     [matChipInputFor]="tagList"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                     (matChipInputTokenEnd)="addTagNew($event)">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <mat-form-field class="demo-chip-list">
+              <mat-chip-list #identifierList>
+                <mat-chip *ngFor="let identifier of user.identifiers" [selectable]="selectable"
+                          [removable]="true" (remove)="removeIdentifierNew(identifier)">
+                  {{identifier.code}}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+              <mat-placeholder>
+                <i class="fa fa-barcode" aria-hidden="true"></i>
+                Barcode
+              </mat-placeholder>
+              <input matInput name="Identifier hinzufügen"
+                     [matChipInputFor]="identifierList"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                     (matChipInputTokenEnd)="addIdentifierNew($event)">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <!-- -->
+      <div class="col-lg-4 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <h4>Transaktionen</h4>
+            <div class="text-center text-muted">Aktuell nicht unterstützt.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 8px;">
+      <button mat-button routerLink="/users" color="warn">Änderungen verwerfen</button>
+      <div style="float: right;">
+        <button mat-raised-button (click)="save()" color="primary">Änderungen speichern</button>
+      </div>
+    </div>
+  </mat-card>
 </div>

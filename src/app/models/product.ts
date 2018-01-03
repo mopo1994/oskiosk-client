@@ -26,7 +26,7 @@ export class Product extends Identifiable {
     }
 
     deletePricing(pricing: Pricing){
-        let index = this.pricings.indexOf(pricing, 0);
+        const index = this.pricings.indexOf(pricing, 0);
         if (index > -1) {
             this.pricings.splice(index, 1);
         }
@@ -37,7 +37,7 @@ export class Product extends Identifiable {
     }
 
     deleteTag(tag: Tag){
-        let index = this.tags.indexOf(tag, 0);
+        const index = this.tags.indexOf(tag, 0);
         if (index > -1) {
             this.tags.splice(index, 1);
         }

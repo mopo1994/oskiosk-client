@@ -1,81 +1,16 @@
-<!--
-<div class="container-fluid mt-2" style="font-size: 20px;">
-
-    <div *ngIf="mode == 0">
-        <h1 class="display-2 text-center">Moin</h1>
-        <h1 class="display-4 text-center mt-4">Bitte scanne deine <span class="text-primary"><i class="fa fa-id-card" aria-hidden="true"></i> ID Karte</span>, um zu beginnen.</h1>
-    </div>
-    <div *ngIf="mode == 1 && cart.isEmpty()">
-        <h1 class="display-4 text-center">Ein herzliches Moin!</h1>
-        <div class="card col-lg-4 offset-lg-4">
-          <div class="card-body" style="overflow: hidden">
-            <h4 class="card-title">{{ user.name }}</h4>
-            <h4 class="card-subtitle text-muted">Dein aktueller Kontostand: {{ user.balance / 100 | currency:'EUR':true:'1.2-2' }}</h4>
-          </div>
-        </div>
-        <h1 class="display-4 text-center mt-4">Bitte scanne jetzt <span class="text-primary"><i class="fa fa-coffee" aria-hidden="true"></i> die Produkte</span>, die du kaufen möchtest.</h1>
-        <h1 class="display-4 text-center mt-4"><span class="text-danger">Abbrechen mit der <kbd>&times;/*</kbd> Taste.</span></h1>
-    </div>
-    <div *ngIf="mode == 1 && !cart.isEmpty()">
-      <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-        <thead>
-        <tr>
-          <th>Produkt</th>
-          <th>Stückpreis</th>
-          <th>Anzahl</th>
-          <th>Gesamtpreis</th>
-        </tr>
-        </thead>
-            <tbody>
-                <tr *ngFor="let item of cart.cart_items">
-                    <td>{{ item.product_name }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ item.unit_price / 100 | currency:'EUR':true:'1.2-2' }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.quantity }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ item.totalPrice() / 100 | currency:'EUR':true:'1.2-2' }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <h1 class="display-4 text-center">Summe: {{ cart.totalSum() / 100 | currency:'EUR':true:'1.2-2' }}</h1>
-        <h1 class="display-4 text-center mt-4">Bestätige deine Bestellung <span class="text-primary">indem du die <kbd>Enter</kbd> Taste drückst</span>.</h1>
-        <h1 class="display-4 text-center mt-4"><span class="text-danger">Abbrechen mit der <kbd>&times;/*</kbd> Taste.</span></h1>
-    </div>
-    <div *ngIf="mode == 2">
-        <h1 class="display-2 text-center">Vielen Dank!</h1>
-        <h1 class="display-4 text-center">Dein neuer Kontostand: {{ user.balance / 100 | currency:'EUR':true:'1.2-2' }}</h1>
-        <div *ngIf="fun" class="text-center">
-            <img class="rounded" style="max-width: 50vw; max-height: 30vh" src="assets/fun/{{ getRandomInt(1, 11) }}.gif">
-        </div>
-    </div>
-</div>
-
-<div #modal class="modal fade" id="modal" style="font-size: 20px;">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="alert alert-danger">
-                    <h4 class="alert-heading">{{ modal_heading }}</h4>
-                    <p class="mb-0">{{ modal_text }}</p>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" [ngClass]="modal_progress_class"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
-
-<div style="width: 100%; height: 100%;"></div>
-
-<div style="height: 100%;">
-  <mat-horizontal-stepper #matStepper [linear]="isLinear" style="margin-bottom: 1em;">
+<div style="height: 100vh;">
+  <mat-horizontal-stepper #matStepper [linear]="isLinear" style="height:100%; margin-bottom: 1em;">
     <mat-step [stepControl]="firstFormGroup">
-      <form #firstForm="ngForm" [formGroup]="firstFormGroup" >
+      <form #firstForm="ngForm" [formGroup]="firstFormGroup">
         <ng-template matStepLabel>Scanne deine ID</ng-template>
         <div> <!--*ngIf="mode ==0">-->
           <h2 class="md-display-1 text-center">
             Moin, scanne deine&nbsp;
             <mat-form-field>
-              <input autofocus (change)="identifier_dirty=true; ngForm.form.markAsDirty();userInput.select();userInput.focus();" #userInput matInput [value]="identifier_input" placeholder="ID" formControlName="firstCtrl" required>
+              <input autofocus
+                     (change)="identifier_dirty=true; firstForm.form.markAsDirty();userInput.select();userInput.focus();"
+                     #userInput matInput [value]="identifier_input" placeholder="ID" formControlName="firstCtrl"
+                     required>
             </mat-form-field>
             , um zu beginnen.
           </h2>

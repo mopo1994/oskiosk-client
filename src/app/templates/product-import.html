@@ -1,66 +1,70 @@
-<navbar></navbar>
-
+<!-- TODO: testen ob noch alles sauber läuft -->
 <div class="container-fluid">
-    <h1 class="mt-2"> Produkte importieren</h1>
+  <h1 class="mt-2"> Produkte importieren</h1>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">CSV Datei importieren</div>
-          <div class="card-body text-info">
-            <p>Produkte können aus einer CSV-formatierten Datei importiert werden. Eine solche kann beispielsweise mit Libreofficde/Openoffice Calc oder Microsoft Excel erstellt werden.
-              Die importierte Datei hat ein spezifisches Format, welches unten angezeigt wird.
-              Nachdem eine Datei gewählt wurde wird dir eine Vorschau des Dateiinhalts angezeigt.
-              Bitte prüfe diese Ansicht sorgsam! Wenn alles wie erwartet aussieht kannst du den Importierungsprozess beginnen, in dem du auf den "Import starten" Knopf drückst.
-              Bitte nimm zur Kenntnis, dass der Vorgang abhängig von der Netzwerkverbindung und der Anzahl der importierten Nutzer einige Zeit in Anspruch nehmen kann.</p>
-              <p><b>Beispiel CSV Datei:</b></p>
-              <pre><code>
+  <mat-card>
+    <h2 class="title">CSV Datei importieren</h2>
+    <p>Produkte können aus einer CSV-formatierten Datei importiert werden. Eine solche kann beispielsweise mit
+      Libreofficde/Openoffice Calc oder Microsoft Excel erstellt werden.
+      Die importierte Datei hat ein spezifisches Format, welches unten angezeigt wird.
+      Nachdem eine Datei gewählt wurde wird dir eine Vorschau des Dateiinhalts angezeigt.
+      Bitte prüfe diese Ansicht sorgsam! Wenn alles wie erwartet aussieht kannst du den Importierungsprozess beginnen,
+      in dem du auf den "Import starten" Knopf drückst.
+      Bitte nimm zur Kenntnis, dass der Vorgang abhängig von der Netzwerkverbindung und der Anzahl der importierten
+      Nutzer einige Zeit in Anspruch nehmen kann.
+    <p><b>Beispiel CSV Datei:</b></p>
+    <pre><code>
 "Testproduct 1",100,"tag_a tag_b","1111"
 "Testproduct 2",200,"tag_c","2222"
-              </code></pre>
-              <p><b>Erklärung des Formats:</b></p>
-              <ul>
-                  <li>Produktname (erste Spalte): Der gewünschte Name des Produkts</li>
-                  <li>Produktpreis (zweite Spalte): Der Produktpreis in Cent. (100 = 1 EUR)</li>
-                  <li>Tags (dritte Spalte): Jegliche Tags, die auf das Produkt angewendet werden sollen. Mehrere Tags können mit Leerzeichen getrennt werden.</li>
-                  <li>Barcode (vierte Spalte): Der Barcode, welcher dem Produkt zugeordnet ist. Bitte beachte, dass der Barcode, um Problemen vorzubeugen, immer ein String-Wert sein sollte, beispielsweise mit vorangehenden Nullern.</li>
-              </ul>
-          </div>
-          <div class="card-footer">
-            <button class="btn btn-success mr-2" (click)="confirmImport()">Import starten</button>
-            <button class="btn btn-warning" (click)="abortImport()">Import abbrechen</button>
-            <input type="file" (change)="fileEventListener($event)">
-          </div>
-        </div>
-        <div *ngIf="importableProducts.length > 0">
-            <div class="progress mt-2">
-                <div class="progress-bar" [style.width]="importProgress + '%'"></div>
-            </div>
-            <table class="table table-bordered mt-2">
-                <thead>
-                    <tr>
-                        <th class="text-center w-25">Produktname</th>
-                        <th class="text-center w-25">Produktpreis</th>
-                        <th class="text-center w-25">Tags</th>
-                        <th class="text-center w-25">Barcode</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of importableProducts">
-                        <td>
-                            {{ item.name }}
-                            <span *ngIf="item.import_success" class="badge badge-success">Import OK</span>
-                            <span *ngIf="item.import_fail" class="badge badge-danger">Import Fehlgeschlagen</span>
-                        </td>
-                        <td>{{ item.pricings[0].decimal_price | currency:'EUR':true:'1.2-2' }}</td>
-                        <td>
-                            <span *ngFor="let tag of item.tags" class="badge badge-secondary mr-1">{{ tag.name }}</span>
-                        </td>
-                        <td>{{ item.identifiers[0].code }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+ </code></pre>
+    <p><b>Erklärung des Formats:</b></p>
+    <ul>
+      <li>Produktname (erste Spalte): Der gewünschte Name des Produkts</li>
+      <li>Produktpreis (zweite Spalte): Der Produktpreis in Cent. (100 = 1 EUR)</li>
+      <li>Tags (dritte Spalte): Jegliche Tags, die auf das Produkt angewendet werden sollen. Mehrere Tags können mit
+        Leerzeichen getrennt werden.
+      </li>
+      <li>Barcode (vierte Spalte): Der Barcode, welcher dem Produkt zugeordnet ist. Bitte beachte, dass der Barcode,
+        um Problemen vorzubeugen, immer ein String-Wert sein sollte, beispielsweise mit vorangehenden Nullern.
+      </li>
+    </ul>
+    <div>
+      <button mat-button (click)="abortImport()" color="warn">Import abbrechen</button>
+      <div style="float: right;">
+        <input type="file" (change)="fileEventListener($event)">
+        <button mat-raised-button (click)="confirmImport()" color="primary">Import starten</button>
       </div>
     </div>
+  </mat-card>
+  <mat-card *ngIf="importableProducts.length > 0">
+    <div>
+      <div class="progress mt-2">
+        <div class="progress-bar" [style.width]="importProgress + '%'"></div>
+      </div>
+      <table class="table table-bordered mt-2">
+        <thead>
+        <tr>
+          <th class="text-center w-25">Produktname</th>
+          <th class="text-center w-25">Produktpreis</th>
+          <th class="text-center w-25">Tags</th>
+          <th class="text-center w-25">Barcode</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of importableProducts">
+          <td>
+            {{ item.name }}
+            <span *ngIf="item.import_success" class="badge badge-success">Import OK</span>
+            <span *ngIf="item.import_fail" class="badge badge-danger">Import Fehlgeschlagen</span>
+          </td>
+          <td>{{ item.pricings[0].decimal_price | currency:'EUR':true:'1.2-2' }}</td>
+          <td>
+            <span *ngFor="let tag of item.tags" class="badge badge-secondary mr-1">{{ tag.name }}</span>
+          </td>
+          <td>{{ item.identifiers[0].code }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
 </div>

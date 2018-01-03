@@ -1,85 +1,110 @@
-<navbar></navbar>
-
 <div class="container-fluid">
+
+  <div class="container-fluid">
     <h1 class="mt-2">Einzahlungsstation</h1>
 
     <div class="row">
-        <div class="col-lg-4">
+      <div class="col-lg-4">
 
-            <div class="card" *ngIf="!user">
-                <div class="card-header">
-                    Barcode input
-                </div>
-                <div class="card-body">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-addon text-primary"><i class="fa fa-barcode" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control form-control-lg" [value]="identifier_input" placeholder="Type identifier or use barcode scanner ..." readonly>
-                    </div>
-                    <button class="btn btn-secondary btn-lg btn-block mt-2" (click)="confirmInput()" [disabled]="identifier_input.length == 0">
-                        <i *ngIf="wait_identifier" class="fa fa-spinner fa-spin fa-fw"></i> Barcode eingeben
-                    </button>
-                </div>
+        <mat-card *ngIf="!user">
+          <h2 class="title">Barcode</h2>
+
+          <mat-input-container style="width: 100%;">
+            <mat-placeholder>
+              <i class="fa fa-barcode" aria-hidden="true"></i>
+              Kennung eingeben / Barcode scannen...
+            </mat-placeholder>
+            <input type="text" matInput name="barcode" [value]="identifier_input" readonly>
+          </mat-input-container>
+          <button mat-raised-button  (click)="confirmInput()"
+                  [disabled]="identifier_input.length == 0">
+            <mat-progress-bar *ngIf="wait_checkout" mode="indeterminate"></mat-progress-bar>
+            Barcode eingeben
+          </button>
+        </mat-card>
+
+        <mat-card *ngIf="user">
+          <h2 class="title">Kunde</h2>
+          <h2 class="card-title">
+            <mat-progress-bar *ngIf="wait_checkout" mode="indeterminate"></mat-progress-bar>
+            {{ user.balance / 100 | currency:'EUR':true:'1.2-2' }}
+          </h2>
+          <h4 class="card-subtitle mb-4 text-muted">{{ user.name }}</h4>
+          <button mat-button color="warn" (click)="abort()">Abbrechen</button>
+        </mat-card>
+      </div>
+
+      <div class="col-lg-8">
+        <mat-card>
+          <h2 class="title">Die Höhe der Kontobewegung</h2>
+          <div class="card-body text-center text-muted" *ngIf="!user">
+            Bitte scanne zuerst einen Kundenbarcode.
+          </div>
+          <div class="card-body" *ngIf="user">
+            <h3 class="subheading-2">Schulden, um das Guthaben auf 0 € zu setzen.</h3>
+            <div class="btn-group btn-group-lg mt-2">
+              <span class="input-group-addon">Schulden</span>
+              <button class="btn btn-primary" (click)="deposit(-user.balance)">{{ -user.balance/100 |
+                currency:'EUR':true:'1.2-2' }}
+              </button>
             </div>
-
-            <div class="card mt-2" *ngIf="user">
-                <div class="card-header">
-                    Kunde
-                </div>
-                <div class="card-body">
-                    <h2 class="card-title"><i *ngIf="wait_checkout" class="fa fa-spinner fa-spin fa-fw"></i> {{ user.balance / 100 | currency:'EUR':true:'1.2-2' }}</h2>
-                    <h4 class="card-subtitle mb-4 text-muted">{{ user.name }}</h4>
-                    <button class="btn btn-warning btn-lg btn-block" (click)="abort()">Abort</button>
-
-                </div>
+            <h3 class="subheading-2">Vorgefertigte Werte</h3>
+            <h4 class="subheading-1">Guthaben auszahlen</h4>
+            <div>
+              <button mat-raised-button color="secondary" (click)="deposit(500)">5 €</button>
+              <button mat-raised-button color="secondary" (click)="deposit(1000)">10 €</button>
+              <button mat-raised-button color="secondary" (click)="deposit(2000)">20 €</button>
+              <button mat-raised-button color="secondary" (click)="deposit(5000)">50 €</button>
+              <button mat-raised-button color="secondary" (click)="deposit(10000)">100 €</button>
             </div>
-        </div>
-
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    Choose amount to deposit or withdraw
-                </div>
-                <div class="card-body text-center text-muted" *ngIf="!user">
-                  Bitte scanne zuerst einen Kundenbarcode.
-                </div>
-                <div class="card-body" *ngIf="user">
-                    <h4 class="card-subtitle">Deposit/Withdraw to set user balance to 0 €</h4>
-                    <div class="btn-group btn-group-lg mt-2">
-                        <span class="input-group-addon">Deposit/Withdraw funds</span>
-                        <button class="btn btn-primary" (click)="deposit(-user.balance)">{{ -user.balance/100 | currency:'EUR':true:'1.2-2' }}</button>
-                    </div>
-                    <h4 class="card-subtitle mt-4">Pre-defined amounts</h4>
-                    <div class="btn-group btn-group-lg mt-2">
-                        <span class="input-group-addon">Deposit funds</span>
-                        <button class="btn btn-secondary" (click)="deposit(500)">€5</button>
-                        <button class="btn btn-secondary" (click)="deposit(1000)">€10</button>
-                        <button class="btn btn-secondary" (click)="deposit(2000)">€20</button>
-                        <button class="btn btn-secondary" (click)="deposit(5000)">€50</button>
-                        <button class="btn btn-secondary" (click)="deposit(10000)">€100</button>
-                    </div>
-                    <div class="btn-group btn-group-lg mt-2">
-                        <span class="input-group-addon">Withdraw funds</span>
-                        <button class="btn btn-secondary text-danger" (click)="deposit(-500)">-€5</button>
-                        <button class="btn btn-secondary text-danger" (click)="deposit(-1000)">-€10</button>
-                        <button class="btn btn-secondary text-danger" (click)="deposit(-2000)">-€20</button>
-                        <button class="btn btn-secondary text-danger" (click)="deposit(-5000)">-€50</button>
-                        <button class="btn btn-secondary text-danger" (click)="deposit(-10000)">-€100</button>
-                    </div>
-                    <h4 class="card-subtitle mt-4">Custom amounts</h4>
-                    <div class="input-group mt-2">
-                        <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter deposit amount" [(ngModel)]="deposit_custom">
-                        <span class="input-group-btn w-25">
-                            <button class="btn btn-secondary" type="button" (click)="deposit(deposit_custom * 100)">Deposit funds</button>
+            <h4 class="subheading-1">Guthaben auszahlen</h4>
+            <div>
+              <button mat-raised-button style="color:red;" (click)="deposit(-500)">-5 €</button>
+              <button mat-raised-button style="color:red;" (click)="deposit(-1000)">-10 €</button>
+              <button mat-raised-button style="color:red;" (click)="deposit(-2000)">-20 €</button>
+              <button mat-raised-button style="color:red;" (click)="deposit(-5000)">-50 €</button>
+              <button mat-raised-button style="color:red;" (click)="deposit(-10000)">-100 €</button>
+            </div>
+            <h4 class="mat-subheading-1">Eigene Werte</h4>
+            <div class="input-group mt-2">
+              <!--<input type="number" min="0" step="0.01" class="form-control" placeholder="Einzahlungsbetrag eingeben"
+                     [(ngModel)]="deposit_custom">-->
+              <mat-input-container style="width: 100%;">
+                <mat-placeholder>
+                  <i class="fa fa-money" aria-hidden="true"></i>
+                  Einzahlungsbetrag eingeben
+                </mat-placeholder>
+                <input type="number" min="0" step="0.01" matInput name="deposit" [(ngModel)]="deposit_custom">
+                <!--<mat-error *ngIf="emailFormControl.hasError('required')">
+                  Email is <strong>required</strong>
+                </mat-error>-->
+              </mat-input-container>
+              <span class="input-group-btn w-25">
+                            <button mat-raised-button color="secondary" type="button"
+                                    (click)="deposit(deposit_custom * 100)">einzahlen</button>
                         </span>
-                    </div>
-                    <div class="input-group mt-2">
-                        <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter withdraw amount" [(ngModel)]="withdraw_custom">
-                        <span class="input-group-btn w-25">
-                            <button class="btn btn-secondary" type="button" (click)="deposit(-withdraw_custom * 100)">Withdraw funds</button>
-                        </span>
-                    </div>
-                </div>
             </div>
-        </div>
+            <!--<input type="number" min="0" step="0.01" class="form-control" placeholder="Auszahlungsbetrag eingeben"
+                   [(ngModel)]="withdraw_custom">-->
+            <div class="input-group mt-2">
+              <mat-input-container style="width: 100%;">
+                <mat-placeholder>
+                  <i class="fa fa-money" aria-hidden="true"></i>
+                  Auszahlungsbetrag eingeben
+                </mat-placeholder>
+                <input type="number" min="0" step="0.01" matInput name="withdraw" [(ngModel)]="withdraw_custom">
+                <!--<mat-error *ngIf="emailFormControl.hasError('required')">
+                  Email is <strong>required</strong>
+                </mat-error>-->
+              </mat-input-container>
+              <span class="input-group-btn w-25">
+                            <button mat-raised-button style="color:red;" type="button"
+                                    (click)="deposit(-withdraw_custom * 100)">auszahlen</button>
+                        </span>
+            </div>
+          </div>
+        </mat-card>
+      </div>
     </div>
+  </div>
 </div>

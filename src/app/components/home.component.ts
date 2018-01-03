@@ -6,5 +6,6 @@ import { Component } from "@angular/core";
     providers: []
 })
 export class HomeComponent{
+  content_name = 'Home';
     stub='';
 }
