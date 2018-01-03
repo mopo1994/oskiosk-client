@@ -1,84 +1,93 @@
-<navbar></navbar>
-
 <div class="container-fluid">
-    <h1 class="mt-2">Verkaufsstation</h1>
+  <h1 class="headline">Verkaufsstation</h1>
+  <div class="row">
+    <div class="col-lg-3">
 
-    <div class="row">
-        <div class="col-lg-3">
+      <mat-card style="margin-left: 4px; margin-right: 4px;">
+        <h2 class="title">Barcode Eingabe</h2>
+        <div class="card-body">
+          <div class="input-group input-group-lg">
+            <mat-input-container style="width: 100%;">
+              <mat-placeholder>
+                <i class="fa fa-barcode" aria-hidden="true"></i>
+                Kennung eingeben / Barcode scannen...
+              </mat-placeholder>
+              <input type="text" matInput name="barcode" [value]="identifier_input" readonly>
+              <!--<mat-error *ngIf="emailFormControl.hasError('required')">
+                Email is <strong>required</strong>
+              </mat-error>-->
+            </mat-input-container>
+          </div>
 
-            <div class="card">
-                <div class="card-header">
-                    Barcode Eingabe
-                </div>
-                <div class="card-body">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-addon text-primary"><i class="fa fa-barcode" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control form-control-lg" [value]="identifier_input" placeholder="Kennung eingeben / Barcode scannen..." readonly>
-                    </div>
-                    <button class="btn btn-secondary btn-lg btn-block mt-2" (click)="confirmInput()" [disabled]="identifier_input.length == 0">
-                        <i *ngIf="wait_identifier" class="fa fa-spinner fa-spin fa-fw"></i> Barcode eingeben
-                    </button>
-                </div>
-            </div>
-
-            <div class="card mt-2">
-                <div class="card-header">
-                    Gesamtsumme
-                </div>
-                <div class="card-body">
-                    <h2 class="display-2">{{ cart.totalSum() / 100 | currency:'EUR':true:'1.2-2' }}</h2>
-                </div>
-            </div>
-
-            <div class="card mt-2">
-                <div class="card-header">
-                    Customer and Checkout
-                </div>
-                <div class="card-body">
-                    <p *ngIf="!user" class="card-text text-center text-muted">Bitte scanne einen Kundencode, um den checkout zu aktivieren.</p>
-                    <h2 *ngIf="user" class="card-title">{{ user.name }}</h2>
-                    <h4 *ngIf="user" class="card-subtitle mb-4 text-muted">{{ user.balance / 100 | currency:'EUR':true:'1.2-2' }}</h4>
-                    <button class="btn btn-primary btn-lg btn-block" (click)="payCart()" [disabled]="identifier_input.length > 0 || !user || cart.isEmpty()">
-                        <i *ngIf="wait_checkout" class="fa fa-spinner fa-spin fa-fw"></i>  AUSCHECKEN
-                    </button>
-                    <button class="btn btn-warning btn-lg btn-block" (click)="abort()" [disabled]="cart.isEmpty() && !user">Abbrechen</button>
-
-                </div>
-            </div>
+          <button mat-raised-button (click)="confirmInput()"
+                  [disabled]="identifier_input.length == 0">
+            <mat-progress-bar *ngIf="wait_checkout" mode="indeterminate"></mat-progress-bar>
+            <!--<i *ngIf="wait_identifier" class="fa fa-spinner fa-spin fa-fw"></i>--> Barcode eingeben
+          </button>
         </div>
+      </mat-card>
 
-        <div class="col-lg-9">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="text-center w-25">Produktbezeichnung</th>
-                        <th class="text-center w-25">Stückpreis</th>
-                        <th class="text-center w-25">Anzahl</th>
-                        <th class="text-center w-25">Gesamtpreis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of cart.cart_items">
-                        <td>{{ item.product_name }}</td>
-                        <td class="text-right">{{ item.unit_price / 100 | currency:'EUR':true:'1.2-2' }}</td>
-                        <td class="text-right">
-                            <div class="input-group">
-                                <input type="text" class="form-control" [value]="item.quantity" readonly>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-secondary" (click)="increaseQuantity(item.pricing_id)">+</button>
-                                </span>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-secondary" (click)="decreaseQuantity(item.pricing_id)">-</button>
-                                </span>
-                            </div>
-                        </td>
-                        <td class="text-right">{{ item.totalPrice() / 100 | currency:'EUR':true:'1.2-2' }}</td>
-                    </tr>
-                    <tr *ngIf="cart.isEmpty()">
-                        <td colspan="4" class="text-muted text-center">Der Warenkorb ist leer.</td>
-                    </tr>
-                </tbody>
-            </table>
+      <mat-card style="margin: 4px;">
+        <h2 class="title">Gesamtsumme</h2>
+        <h3 class="display-4" style="text-align: center;">{{ cart.totalSum() / 100 | currency:'EUR':true:'1.2-2' }}</h3>
+      </mat-card>
+      <mat-card style="margin-left: 4px; margin-right: 4px;">
+        <!--Customer and Checkout-->
+        <h2 class="title">Kunde</h2>
+        <div class="card-body">
+          <p *ngIf="!user" class="caption" style="text-align: center;">Bitte scanne einen Kundencode, um den checkout zu
+            aktivieren.</p>
+          <h2 *ngIf="user" class="card-title">{{ user.name }}</h2>
+          <h4 *ngIf="user" class="card-subtitle mb-4 text-muted">{{ user.balance / 100 | currency:'EUR':true:'1.2-2' }}</h4>
+          <div>
+            <button mat-button color="warn" (click)="abort()" [disabled]="cart.isEmpty() && !user">Abbrechen</button>
+            <div style="float: right;">
+              <button mat-raised-button color="primary" (click)="payCart()"
+                      [disabled]="identifier_input.length > 0 || !user || cart.isEmpty()">
+                <mat-progress-bar *ngIf="wait_checkout" mode="indeterminate"></mat-progress-bar>
+                <!--<i *ngIf="wait_checkout" class="fa fa-spinner fa-spin fa-fw"></i>--> AUSCHECKEN
+              </button>
+            </div>
+          </div>
+
         </div>
+      </mat-card>
     </div>
+
+    <div class="col-lg-9">
+      <table class="mdl-data-table" style="width: 100%;">
+        <thead>
+        <tr>
+          <th class="text-center w-25">Produktbezeichnung</th>
+          <th class="text-center w-25">Stückpreis</th>
+          <th class="text-center w-25">Anzahl</th>
+          <th class="text-center w-25">Gesamtpreis</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of cart.cart_items">
+          <td>{{ item.product_name }}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{ item.unit_price / 100 | currency:'EUR':true:'1.2-2' }}</td>
+          <td class="mdl-data-table__cell--non-numeric">
+            <div class="input-group">
+              <input type="text" class="form-control" [value]="item.quantity" readonly>
+              <span class="input-group-btn">
+                                    <button type="button" class="btn btn-secondary"
+                                            (click)="increaseQuantity(item.pricing_id)">+</button>
+                                </span>
+              <span class="input-group-btn">
+                                    <button type="button" class="btn btn-secondary"
+                                            (click)="decreaseQuantity(item.pricing_id)">-</button>
+                                </span>
+            </div>
+          </td>
+          <td class="mdl-data-table__cell--non-numeric">{{ item.totalPrice() / 100 | currency:'EUR':true:'1.2-2' }}</td>
+        </tr>
+        <tr *ngIf="cart.isEmpty()">
+          <td colspan="4" class="text-muted text-center mdl-data-table__cell--non-numeric">Der Warenkorb ist leer.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

@@ -1,84 +1,105 @@
-<navbar></navbar>
-
 <div class="container-fluid">
-    <h1 *ngIf="product.id" class="mt-2">Produkt bearbeiten</h1>
-    <h1 *ngIf="!product.id" class="mt-2">Produkt erstellen</h1>
+  <h1 *ngIf="product.id" class="headline">Produkt bearbeiten</h1>
+  <h1 *ngIf="!product.id" class="headline">Produkt erstellen</h1>
 
-    <div class="card mt-2">
-        <div class="card-body">
-            <h4>Product name</h4>
-            <div class="form-group row">
-                <div class="col-12">
-                    <input class="form-control" type="text" [(ngModel)]="product.name">
-                </div>
-            </div>
+  <mat-card>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Name" type="text" [(ngModel)]="product.name">
+    </mat-form-field>
+    <div class="row" *ngIf="product">
+      <div class="col-lg-4 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <!--<h4>Tags</h4>-->
+            <mat-form-field class="demo-chip-list">
+              <mat-chip-list #tagList>
+                <mat-chip *ngFor="let tag of product.tags" [selectable]="selectable"
+                          [removable]="true" (remove)="removeTagNew(tag)">
+                  {{tag.name}}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
 
-            <div class="row" *ngIf="product">
-                <div class="col-lg-4 mt-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>Tags</h4>
-                            <div *ngFor="let tag of product.tags" class="form-group row">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i></span>
-                                        <input class="form-control" type="text" [(ngModel)]="tag.name">
-                                        <span class="input-group-btn">
-                                            <button (click)="deleteTag(tag)" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button (click)="addTag()" class="btn btn-secondary"><i class="fa fa-plus" aria-hidden="true"></i> Add tag</button>
-                        </div>
-                    </div>
+              <mat-placeholder>
+                <i class="fa fa-tag" aria-hidden="true"></i>
+                TAG
+              </mat-placeholder>
+              <input matInput name="tag hinzufügen"
+                     [matChipInputFor]="tagList"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                     (matChipInputTokenEnd)="addTagNew($event)">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <mat-form-field class="demo-chip-list">
+              <mat-chip-list #identifierList>
+                <mat-chip *ngFor="let identifier of product.identifiers" [selectable]="selectable"
+                          [removable]="true" (remove)="removeIdentifierNew(identifier)">
+                  {{identifier.code}}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+              <mat-placeholder>
+                <i class="fa fa-barcode" aria-hidden="true"></i>
+                Barcode
+              </mat-placeholder>
+              <input matInput name="Identifier hinzufügen"
+                     [matChipInputFor]="identifierList"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                     (matChipInputTokenEnd)="addIdentifierNew($event)">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <!--<h4>Pricings</h4>-->
+            <div class="card mt-2" *ngFor="let pricing of product.pricings; let i = index">
+              <div class="card-body">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-placeholder>
+                      <!--<i class="fa fa-money" aria-hidden="true"></i>-->
+                      Anzahl
+                    </mat-placeholder>
+                    <input matInput name="quantity"
+                           id="quantity-{{ i }}" type="number" min="0" step="1" class="form-control"
+                           [(ngModel)]="pricing.quantity">
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-placeholder>
+                      <i class="fa fa-money" aria-hidden="true"></i>
+                      Stückpreis
+                    </mat-placeholder>
+                    <input matInput name="price"
+                           id="price-{{ i }}" type="number" min="0" step="0.01" class="form-control"
+                           [(ngModel)]="pricing.decimal_price">
+                  </mat-form-field>
+                  <button (click)="deletePricing(pricing)" class="btn btn-danger mt-2"><i class="fa f    a-trash" aria-hidden="true"></i> Löschen</button>
                 </div>
-                <div class="col-lg-4 mt-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>Barcodes</h4>
-                            <div *ngFor="let identifier of product.identifiers" class="form-group row">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-barcode" aria-hidden="true"></i></span>
-                                        <input class="form-control" type="text" [(ngModel)]="identifier.code">
-                                        <span class="input-group-btn">
-                                            <button (click)="deleteIdentifier(identifier)" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button (click)="addIdentifier()" class="btn btn-secondary"><i class="fa fa-plus" aria-hidden="true"></i> Add barcode</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 mt-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>Pricings</h4>
-                            <div class="card mt-2" *ngFor="let pricing of product.pricings; let i = index">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="quantity-{{ i }}">Menge auf Lager</label>
-                                        <input id="quantity-{{ i }}" type="number" min="0" step="1" class="form-control" [(ngModel)]="pricing.quantity">
-                                        <label class="mt-2" for="price-{{ i }}">Stückpreis</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-euro" aria-hidden="true"></i></span>
-                                            <input id="price-{{ i }}" type="number" min="0" step="0.01" class="form-control" [(ngModel)]="pricing.decimal_price">
-                                        </div>
-                                        <button (click)="deletePricing(pricing)" class="btn btn-danger mt-2"><i class="fa fa-trash" aria-hidden="true"></i> Löschen</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <button (click)="addPricing()" class="btn btn-secondary mt-2"><i class="fa fa-plus" aria-hidden="true"></i> Preis hinzufügen</button>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+            <button style="margin-top: 4px;" mat-button (click)="addPricing()" color="secondary"><i class="fa fa-plus"
+                                                                                                    aria-hidden="true"></i>
+              Preis hinzufügen
+            </button>
+          </div>
         </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-success" (click)="save()"><i class="fa fa-check"></i> Änderungen speichern</button>
-            <a routerLink="/products" class="btn btn-warning"><i class="fa fa-undo"></i> Änderungen verwerfen</a>
-        </div>
+      </div>
     </div>
+    <div style="margin-top: 8px;">
+      <button mat-button routerLink="/products" color="warn">Änderungen verwerfen</button>
+      <div style="float: right;">
+        <button mat-raised-button (click)="save()" color="primary">Änderungen speichern</button>
+      </div>
+    </div>
+  </mat-card>
 </div>

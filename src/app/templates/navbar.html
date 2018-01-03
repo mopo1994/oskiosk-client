@@ -1,29 +1,56 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">DukeKiosk</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<div style="height:100vh; overflow:hidden;">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/" routerLinkActive="active"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-      </li>
-      <li class="nav-item ml-2">
-        <a class="nav-link" routerLink="/products" routerLinkActive="active"><i class="fa fa-coffee" aria-hidden="true"></i> Produkte</a>
-      </li>
-      <li class="nav-item ml-2">
-        <a class="nav-link" routerLink="/users" routerLinkActive="active"><i class="fa fa-user" aria-hidden="true"></i> Kunden</a>
-      </li>
-      <li class="nav-item ml-2">
-        <a class="nav-link" routerLink="/sales-point" routerLinkActive="active"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Verkaufsstation</a>
-      </li>
-      <li class="nav-item ml-2">
-        <a class="nav-link" routerLink="/cash-point" routerLinkActive="active"><i class="fa fa-money" aria-hidden="true"></i> Kassenstation</a>
-      </li>
-      <li class="nav-item ml-2">
-        <a class="nav-link" routerLink="/self-service-point" routerLinkActive="active"><i class="fa fa-barcode" aria-hidden="true"></i> Selbstbedienungsstation</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+  <mat-toolbar color="primary" class="example-toolbar">
+    <div [ngStyle]="{'display' : (screenWidth > 840) ? 'none' : 'block'}">
+      <button mat-icon-button (click)="sidenav.open()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <h1 class="example-app-name">Dukegat Kiosk</h1>&ensp;<h2 *ngIf="content_name">{{content_name}}</h2>
+  </mat-toolbar>
+  <mat-sidenav-container style="height: 100%;">
+    <mat-sidenav #sidenav [opened]="screenWidth > 840" [mode]="(screenWidth > 840) ? 'side' : 'over'">
+      <mat-nav-list>
+        <mat-list-item routerLink="/home">
+          <a class="nav-link" routerLink="/" routerLinkActive="active"><i class="fa fa-home" aria-hidden="true"></i>
+            Home</a>
+        </mat-list-item>
+        <mat-list-item routerLink="/products">
+          <a class="nav-link" routerLink="/products" routerLinkActive="active"><i class="fa fa-coffee"
+                                                                                  aria-hidden="true"></i> Produkte</a>
+        </mat-list-item>
+        <mat-list-item routerLink="/users">
+          <a class="nav-link" routerLink="/users" routerLinkActive="active"><i class="fa fa-user"
+                                                                               aria-hidden="true"></i> Kunden</a>
+        </mat-list-item>
+        <mat-list-item routerLink="/sales-point">
+          <a class="nav-link" routerLink="/sales-point" routerLinkActive="active"><i class="fa fa-shopping-cart"
+                                                                                     aria-hidden="true"></i>
+            Verkaufsstation</a>
+        </mat-list-item>
+        <mat-list-item routerLink="/cash-point">
+          <a class="nav-link" routerLink="/cash-point" routerLinkActive="active"><i class="fa fa-money"
+                                                                                    aria-hidden="true"></i>
+            Kassenstation</a>
+        </mat-list-item>
+        <mat-list-item routerLink="/self-service-point">
+          <a class="nav-link" routerLink="/self-service-point" routerLinkActive="active"><i class="fa fa-barcode"
+                                                                                            aria-hidden="true"></i>
+            Selbstbedienungsstation</a>
+        </mat-list-item>
+        <!--<mat-list-item *ngFor="let link of links">
+          <a matLine href="...">{{ link }}</a>
+          <button mat-icon-button (click)="showInfo(link)">
+            <mat-icon>info</mat-icon>
+          </button>
+        </mat-list-item>-->
+      </mat-nav-list>
+
+    </mat-sidenav>
+
+    <div style="margin: 8px;">
+    <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-container>
+</div>

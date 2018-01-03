@@ -1,34 +1,49 @@
-<navbar></navbar>
-
 <div class="container-fluid">
-    <h1 class="mt-2"> Produkte</h1>
+  <h1 class="headline"> Produkte</h1>
 
-    <div class="form-inline">
-        <a routerLink="/product/new" class="btn btn-success mr-2"><i class="fa fa-plus"></i> Neues Produkt</a>
-        <a routerLink="/product/import" class="btn btn-success mr-2"><i class="fa fa-upload"></i> Produkte importieren</a>
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input class="form-control" type="text" placeholder="Filter products" [(ngModel)]="filter">
-        </div>
+  <div class="form-inline">
+    <button routerLink="/product/new" mat-raised-button style="margin-bottom: 8px; margin-right:4px;" color="primary">
+      <mat-icon matListIcon style="line-height: 0;" svgIcon="plus"></mat-icon>
+      Neues Produkt
+    </button>
+
+    <button routerLink="/product/import" mat-raised-button color="primary"
+            style="margin-bottom: 8px; margin-left:4px; margin-right:4px;">
+      <mat-icon matListIcon style="line-height: 0;" svgIcon="upload"></mat-icon>
+      Produkte importieren
+    </button>
+
+    <div class="input-group" style="margin-left:4px; margin-right:4px;">
+      <mat-input-container>
+        <mat-placeholder>
+          <mat-icon>search</mat-icon>
+          Suchen
+        </mat-placeholder>
+        <input matInput name="Suchen" [(ngModel)]="filter">
+        <!--<mat-error *ngIf="emailFormControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>-->
+      </mat-input-container>
     </div>
+  </div>
 
-    <table class="table table-striped mt-2">
-        <thead>
-            <tr>
-                <th class="text-left w-90">Produktbezeichnung</th>
-                <th class="text-right w-10">Stückpreis</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of filteredProducts">
-                <td>
-                    <a routerLink="/product/{{ item.id }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fa fa-pencil"></i></a>
-                    {{ item.name }}
-                    <span *ngFor="let tag of item.tags" class="badge badge-secondary ml-1">{{ tag.name }}</span>
-                <td class="text-right">
-                    <span *ngIf="item.pricings.length > 0">{{ item.pricings[0].decimal_price | currency:'EUR':true:'1.2-2' }}</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+  <table class="mdl-data-table" style="width: 100%;">
+    <thead>
+    <tr>
+      <th class="text-left w-90">Produktbezeichnung</th>
+      <th class="text-right w-10">Stückpreis</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of filteredProducts">
+      <td class="mdl-data-table__cell--non-numeric">
+        <button mat-icon-button routerLink="/product/{{ item.id }}"><mat-icon>edit</mat-icon></button>
+        {{ item.name }}
+        <span *ngFor="let tag of item.tags" class="badge badge-secondary ml-1">{{ tag.name }}</span>
+      <td class="text-right mdl-data-table__cell--non-numeric">
+        <span *ngIf="item.pricings.length > 0">{{ item.pricings[0].decimal_price | currency:'EUR':true:'1.2-2' }}</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
